@@ -11,45 +11,43 @@ public class Main {
 class HashTable{
     int size;
     int stepLength;
-    boolean[] arrBool;
-    int[] arr;
+    boolean[] tableBool;
+    int[] table;
+    int ms = 92;
     public HashTable(){
         size = 23;
         stepLength = 3;
-        int[] arr = new int[92];
-        boolean[] arrBool = new boolean[92];
-        for(int i = 0; i<arrBool.length; i++){
-            arrBool[i] = false;
+        int[] table = new int[92];
+        boolean[] tableBool = new boolean[92];
+        for(int i = 0; i<tableBool.length; i++){
+            tableBool[i] = false;
         }
     }
     public int hashFun(int value){
-        int index = value % size;
-        while(index<92){
-            if(arrBool[index] == true){
-                index = index + size;
-            }
-        }
-        return index;
+        int hash = value % size;
+        /*while(tableBool[hash] != false && table[hash]!=value){
+            hash = (hash+1) % size;
+        }*/
+        return hash;
     }
     public int seekSlot(int value){
-        int index = value % size;
-        while(index<92){
-            if(arrBool[index] == true)
-            index = index + size;
+        /*int ind = hashFun(value);
+        if(tableBool[ind] == false){
+            return -1;
+        }else return table[ind];*/
+        int hash = hashFun(value);
+        while(tableBool[hash] != false && table[hash]!=value){
+            hash = (hash+1) % size;
         }
-        return index;
+        return hash;
     }
     public void put(int value){
-        int index = seekSlot(value);
-        arr[index] = value;
-        arrBool[index] = true;
+        int ind = seekSlot(value);
+        tableBool[ind] = true;
+        table[ind] = value;
     }
     public int find(int value){
-        int index = seekSlot(value);
-        if(index > 92){
-            return -1;
-        }else{
-            return arr[index];
-        }
+        int ind = hashFun(value);
+        return -1;
     }
 }
