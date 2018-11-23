@@ -3,28 +3,29 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        HashTable ht = new HashTable(23, 3, 92);
-        for(int i = 0; i< 27; i++){
-            ht.put(5 + i * 23);
-        }
-        ht.put(5 + 28 * 23);
-        ht.put(5 + 29 * 23);
-        System.out.println(ht.find(5));
-        System.out.println(ht.find(28));
-        System.out.println(ht.find(51));
+        Test.testHash();
+        Test.testSeekSlot();
+        Test.testPut();
+        Test.testFind();
     }
 }
 class HashTable{
     private int size;
     private int stepLength;
-    private boolean[] tableBool;
-    private int[] table;
+    boolean[] tableBool;
+    int[] table;
 
-     HashTable(int scnsize, int step, int s){
+    HashTable(int scnsize, int step, int s){
         size = scnsize;
         stepLength = step;
         this.table = new int[s];
         this.tableBool = new boolean[s];
+    }
+    public int[] getTable(){
+        return this.table;
+    }
+    public boolean[] getTableBool(){
+        return this.tableBool;
     }
     int hashFun(int value){
         int hash = value % size;
