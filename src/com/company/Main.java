@@ -3,51 +3,61 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
-        HashTable ht = new HashTable();
-        ht.put(5);
+        HashTable ht = new HashTable(23, 3, 92);
+        for(int i = 0; i< 27; i++){
+            ht.put(5 + i * 23);
+        }
+        ht.put(5 + 28 * 23);
+        ht.put(5 + 29 * 23);
+        System.out.println(ht.find(5));
+        System.out.println(ht.find(28));
+        System.out.println(ht.find(51));
     }
 }
 class HashTable{
-    int size;
-    int stepLength;
-    boolean[] tableBool;
-    int[] table;
-    int ms = 92;
-    public HashTable(){
-        size = 23;
-        stepLength = 3;
-        int[] table = new int[92];
-        boolean[] tableBool = new boolean[92];
-        for(int i = 0; i<tableBool.length; i++){
-            tableBool[i] = false;
-        }
+    private int size;
+    private int stepLength;
+    private boolean[] tableBool;
+    private int[] table;
+
+     HashTable(int scnsize, int step, int s){
+        size = scnsize;
+        stepLength = step;
+        this.table = new int[s];
+        this.tableBool = new boolean[s];
     }
-    public int hashFun(int value){
+    int hashFun(int value){
         int hash = value % size;
-        /*while(tableBool[hash] != false && table[hash]!=value){
-            hash = (hash+1) % size;
-        }*/
         return hash;
     }
-    public int seekSlot(int value){
-        /*int ind = hashFun(value);
-        if(tableBool[ind] == false){
-            return -1;
-        }else return table[ind];*/
+    int seekSlot(int value){
         int hash = hashFun(value);
-        while(tableBool[hash] != false && table[hash]!=value){
-            hash = (hash+1) % size;
+        int h = hash;
+        int q = 0;
+        while(tableBool[hash] && table[hash]!=value){
+            hash = h + stepLength * q;
+            if(hash >= table.length){
+                hash = -1;
+                break;
+            }
+            q++;
         }
         return hash;
     }
-    public void put(int value){
+    void put(int value){
         int ind = seekSlot(value);
-        tableBool[ind] = true;
-        table[ind] = value;
+        if(seekSlot(value) == -1){
+            System.out.println("failed to add");
+        }else{
+            tableBool[ind] = true;
+            table[ind] = value;
+        }
     }
-    public int find(int value){
-        int ind = hashFun(value);
-        return -1;
+    int find(int value){
+        int ind = seekSlot(value);
+        if(!tableBool[ind]){
+            ind = -1;
+        }
+        return ind;
     }
 }
