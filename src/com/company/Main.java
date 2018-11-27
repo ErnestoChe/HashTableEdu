@@ -28,30 +28,33 @@ class HashTable{
         return this.tableBool;
     }
     int hashFun(int value){
-        int hash = value % size;
-        return hash;
+        return value % size;
     }
     int seekSlot(int value){
         int hash = hashFun(value);
         int h = hash;
-        int q = 0;
+        //int q = 0;
         while(tableBool[hash] && table[hash]!=value){
-            hash = h + stepLength * q;
-            if(hash >= table.length){
+            hash += stepLength;
+            if(h - hash > stepLength){
                 hash = -1;
                 break;
             }
-            q++;
+            if(hash >= table.length){
+                int dif = hash - table.length;
+                hash = dif;
+            }
         }
         return hash;
     }
-    void put(int value){
+    boolean put(int value){
         int ind = seekSlot(value);
         if(seekSlot(value) == -1){
-            System.out.println("failed to add");
+            return false;
         }else{
             tableBool[ind] = true;
             table[ind] = value;
+            return true;
         }
     }
     int find(int value){
