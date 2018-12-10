@@ -33,7 +33,6 @@ class HashTable{
     int seekSlot(int value){
         int hash = hashFun(value);
         int h = hash;
-        //int q = 0;
         while(tableBool[hash] && table[hash]!=value){
             hash += stepLength;
             if(h - hash > stepLength){
@@ -63,5 +62,18 @@ class HashTable{
             ind = -1;
         }
         return ind;
+    }
+}
+class NativeDic{
+    Object[] table;
+    HashTable ht;
+    NativeDic(int size){
+        this.table = new Object[size];
+        this.ht = new HashTable(23, 3, size);
+    }
+    public void put(Object key, int value){
+        int ind = ht.seekSlot(value);
+        ht.put(value);
+        this.table[ind] = key;
     }
 }
